@@ -12,8 +12,8 @@ $(document).ready(function () {
   // https://stackoverflow.com/questions/33946925/how-do-i-get-geolocation-in-openweather-api
   // https://www.spatialtimes.com/2019/01/Create-a-JavaScript-Weather-App-with-Location-Data-Part-1/
   // https://stackoverflow.com/questions/6548504/how-can-i-get-city-name-from-a-latitude-and-longitude-point
-  let openweathermap = 'http://api.openweathermap.org/data/2.5/weather';
-  let openweatherforecast = 'http://api.openweathermap.org/data/2.5/forecast';
+  let openweathermap = 'https://api.openweathermap.org/data/2.5/weather';
+  let openweatherforecast = 'https://api.openweathermap.org/data/2.5/forecast';
   if (window.navigator && window.navigator.geolocation) {
     window.navigator.geolocation.getCurrentPosition(
       function (position) {
@@ -41,7 +41,7 @@ $(document).ready(function () {
 
   function getGeoCode(cityName) {
     return new Promise((resolve, reject) => {
-      let geoCoder = 'http://api.openweathermap.org/geo/1.0/direct';
+      let geoCoder = 'https://api.openweathermap.org/geo/1.0/direct';
       $.getJSON(geoCoder, {
         q: cityName,
         country: countryCode,
@@ -127,7 +127,7 @@ $(document).ready(function () {
             </div>
             <div class="d-flex align-items-center">
               <span>Feels like ${feelsLike}&#8451</span>
-              <img src="https://openweathermap.org/img/wn/${icon}.png"/>
+              <img src="ss://openweathermap.org/img/wn/${icon}.png"/>
             </div>
             <div class="weather-details-wrapper">
               <ul class="list-inline">
