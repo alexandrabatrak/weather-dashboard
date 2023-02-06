@@ -1,3 +1,22 @@
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 1;
+  transition: all 1s;
+  z-index: 9999;
+}
+
+#loader.hide {
+  opacity: 0;
+  z-index: -1000;
+}
 /* preload images for a smooth background transition */
 /* https://stackoverflow.com/questions/53431876/preload-background-images */
 body::after {
@@ -16,6 +35,7 @@ body::after {
 
 body {
   background: black;
+  font-family: 'Gotu', sans-serif;
 }
 
 main.bg-image {
@@ -49,7 +69,7 @@ header {
 
 .header-title {
   text-transform: uppercase;
-  letter-spacing: 5px;
+  letter-spacing: 10px;
 }
 
 main {
@@ -81,6 +101,7 @@ main {
 
 .city-button {
   width: 200px;
+  padding-left: 0.25rem;
   border: none;
   mix-blend-mode: difference;
 }
@@ -91,7 +112,7 @@ main {
   font-weight: bold;
   position: absolute;
   top: 0.5rem;
-  left: -0.5rem;
+  left: -1rem;
   width: 1rem;
   height: 1rem;
   color: white;
@@ -100,8 +121,14 @@ main {
 
 aside {
   position: absolute;
-  padding-right: 5rem;
+  padding-right: 0.5rem;
   z-index: 2;
+}
+
+#today .weather-header .badge {
+  right: -2rem;
+  font-size: 1rem;
+  mix-blend-mode: difference;
 }
 
 #forecast {
@@ -112,11 +139,12 @@ aside {
 .card {
   display: grid;
   padding: 0;
+  min-height: 250px;
   border: none;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(0, 0, 0, 0.15);
   background-image: url('../images/transbg.png');
   backdrop-filter: blur(10px);
-  transition: background-image 3s, max-height 1s, margin-top 1s;
+  transition: background-image 1s;
 }
 
 .card:not(:first-of-type) {
@@ -143,6 +171,11 @@ aside {
   max-width: 0;
   transform: translateX(100%);
   z-index: -100;
+}
+
+.error {
+  position: absolute;
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 575.999px) {
