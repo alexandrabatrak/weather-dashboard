@@ -69,13 +69,8 @@ function getCurrentWeather(cityName, addCity) {
         let humidity = result.main.humidity;
         let wind = result.wind.speed;
 
-        // TODO: Add background to main based on the weather type
-        $('.weather-main').css({
-          'background-image': `url("./assets/images/${icon}.jpg")`,
-        });
-
         let todayWeatherDisplay = $(
-          `<div class="position-relative">
+          `<div>
             <div class="weather-header">
               <h2 class="display-2 text-capitalise">${name}</h2>
               <h3>${today}</h3>
@@ -93,8 +88,15 @@ function getCurrentWeather(cityName, addCity) {
             </div>
           </div>`
         );
-        $('#today').empty().append(todayWeatherDisplay);
-        todayWeatherDisplay.fadeIn(500);
+
+        // add background based on weather, animate it
+        setTimeout(() => {
+          $('.weather-main').css(
+            'background-image',
+            `url("./assets/images/${icon}.jpg")`
+          );
+          $('#today').empty().append(todayWeatherDisplay).hide().fadeIn(500);
+        }, 500);
       }
     });
 }
@@ -112,6 +114,7 @@ function getForecast(cityName) {
     })
     .then(function (result) {
       if (result.cod == 200) {
+        // ?? There is error with getting all data only for 3pm - it's getting it wrong.
         let forecastData = result.list;
         const dailyData = forecastData.filter((forecastData) => {
           return forecastData.dt_txt.includes('15:00:00');
@@ -120,13 +123,13 @@ function getForecast(cityName) {
           moment(forecastData.dt_txt).format('dddd')
         );
         let dates = dailyData.map((forecastData) =>
-          moment(forecastData.dt_txt).format('LL')
+          moment(forecastData.dt_txt).format('LLLL')
         );
         let forecastCards = [];
         for (let i = 0; i < dates.length; i++) {
-          let icon = forecastData[i].weather[0].icon;
-          let temp = Math.floor(forecastData[i].main.temp);
-          let humidity = forecastData[i].main.humidity;
+          let icon = dailyData[i].weather[0].icon;
+          let temp = Math.floor(dailyData[i].main.temp);
+          let humidity = dailyData[i].main.humidity;
           let weekdate = weekdates[i];
           let date = dates[i];
           let forecastCard = $(
@@ -146,19 +149,21 @@ function getForecast(cityName) {
           );
           forecastCards.push(forecastCard);
           $(forecastCard)
-            .css({ 'background-image': 'none' })
             .mouseover(function () {
-              $(this)
-                .stop()
-                .animate({
-                  'background-image': `url(./assets/images/${icon}.jpg)`,
-                });
+              $(this).css({
+                'background-image': `url(./assets/images/${icon}.jpg)`,
+                'max-height': '300px',
+              });
             })
             .mouseleave(function () {
-              $(this).stop().animate({ 'background-image': 'none' });
+              $(this).css({
+                'background-image': `url(./assets/images/transbg.png)`,
+                'max-height': '250px',
+              });
             });
         }
-        $('#forecast').empty().append(forecastCards);
+        $('#forecast').empty().append(forecastCards).hide().fadeIn(500);
+        height();
       } else if (result.cod === 404) {
         // show error message here for city not found
         console.error(`Error: City not found`);
@@ -169,6 +174,7 @@ function getForecast(cityName) {
 }
 
 function renderHistory() {
+  citiesHistory = citiesHistory.splice(0, 10);
   for (i = 0; i < citiesHistory.length; i++) {
     const cityButton = $(
       `<button class="city-button btn text-capitalize text-start rounded-0 position-relative"><span>${citiesHistory[i]}</span></button>`
@@ -203,11 +209,21 @@ $('#history').on('click', '.city-button', function () {
   getForecast(cityName);
 });
 
-// header is fixed, add padding to main
-let padding = () => {
-  $('main').css({
-    'padding-top': `${$('header').outerHeight()}px`,
-  });
+$('#history-button').click(() => {
+  let el = $('#history');
+  el.hasClass('no-show') ? el.removeClass('no-show') : el.addClass('no-show');
+});
+
+let height = () => {
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    $('#today').css(
+      'min-height',
+      `calc(100vh - ${$('#forecast').outerHeight(true)}px - ${$(
+        'header'
+      ).outerHeight(true)}px)`
+    );
+    $('main').css('padding-top', `${$('header').outerHeight(true)}px`);
+  }
 };
-padding();
-window.onresize = () => padding();
+height();
+window.onresize = () => height();
