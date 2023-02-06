@@ -2,6 +2,7 @@ const API_KEY = '01990277676ad45f8bc3f867a4878557';
 // Geolocation from navigator
 // https://stackoverflow.com/questions/33946925/how-do-i-get-geolocation-in-openweather-api
 // https://www.spatialtimes.com/2019/01/Create-a-JavaScript-Weather-App-with-Location-Data-Part-1/
+// https://stackoverflow.com/questions/6548504/how-can-i-get-city-name-from-a-latitude-and-longitude-point
 let openweathermap = 'http://api.openweathermap.org/data/2.5/weather';
 let openweatherforecast = 'http://api.openweathermap.org/data/2.5/forecast';
 if (window.navigator && window.navigator.geolocation) {
@@ -12,7 +13,7 @@ if (window.navigator && window.navigator.geolocation) {
       units: 'metric',
       appid: API_KEY,
     }).done(function (result) {
-      cityName = result.name;
+      cityName = result.name.toLocaleLowerCase();
       getCurrentWeather(cityName);
       getForecast(cityName, addCity);
     });
@@ -53,7 +54,6 @@ function getCurrentWeather(cityName, addCity) {
       });
     })
     .then(function (result) {
-      console.log(result);
       if (result.cod === 200) {
         if (addCity & !citiesHistory.includes(cityName)) {
           citiesHistory.push(cityName);
@@ -69,17 +69,22 @@ function getCurrentWeather(cityName, addCity) {
         let humidity = result.main.humidity;
         let wind = result.wind.speed;
 
+        // TODO: Add background to main based on the weather type
+        $('.weather-main').css({
+          'background-image': `url("./assets/images/${icon}.jpg")`,
+        });
+
         let todayWeatherDisplay = $(
           `<div class="position-relative">
             <div class="weather-header">
-              <h2 class="text-capitalise">${name}</h2>
+              <h2 class="display-2 text-capitalise">${name}</h2>
               <h3>${today}</h3>
             </div>
-            <div class="weather-icon position-absolute top-0 end-0">
+            <div class="d-flex align-items-center">
+              <span>Feels like ${feelsLike}&#8451</span>
               <img src="https://openweathermap.org/img/wn/${icon}.png"/>
             </div>
             <div class="weather-details-wrapper">
-              <p>Feels like ${feelsLike}&#8451</p>
               <ul class="list-inline">
                 <li class="list-inline-item">${temp}&#8451</li>
                 <li class="list-inline-item">${humidity}%</li>
@@ -89,6 +94,7 @@ function getCurrentWeather(cityName, addCity) {
           </div>`
         );
         $('#today').empty().append(todayWeatherDisplay);
+        todayWeatherDisplay.fadeIn(500);
       }
     });
 }
@@ -105,11 +111,10 @@ function getForecast(cityName) {
       });
     })
     .then(function (result) {
-      console.log(result);
       if (result.cod == 200) {
         let forecastData = result.list;
         const dailyData = forecastData.filter((forecastData) => {
-          return forecastData.dt_txt.includes('18:00:00');
+          return forecastData.dt_txt.includes('15:00:00');
         });
         let weekdates = dailyData.map((forecastData) =>
           moment(forecastData.dt_txt).format('dddd')
@@ -125,12 +130,10 @@ function getForecast(cityName) {
           let weekdate = weekdates[i];
           let date = dates[i];
           let forecastCard = $(
-            `<div class="card">
-              <div class="card-header">
+            `<div class="card rounded-0 bg-image">
+              <div class="card-body">
                 <h5>${weekdate}</h5>
                 <p>${date}</p>
-              </div>
-              <div class="card-body">
                 <div class="weather-data-wrapper">
                 <ul class="list-inline">
                   <li class="list-inline-item">${temp}&#8451</li>
@@ -142,7 +145,18 @@ function getForecast(cityName) {
             </div>`
           );
           forecastCards.push(forecastCard);
-          console.log(date, icon, temp, humidity);
+          $(forecastCard)
+            .css({ 'background-image': 'none' })
+            .mouseover(function () {
+              $(this)
+                .stop()
+                .animate({
+                  'background-image': `url(./assets/images/${icon}.jpg)`,
+                });
+            })
+            .mouseleave(function () {
+              $(this).stop().animate({ 'background-image': 'none' });
+            });
         }
         $('#forecast').empty().append(forecastCards);
       } else if (result.cod === 404) {
@@ -157,7 +171,7 @@ function getForecast(cityName) {
 function renderHistory() {
   for (i = 0; i < citiesHistory.length; i++) {
     const cityButton = $(
-      `<button class="city-button btn">${citiesHistory[i]}</button>`
+      `<button class="city-button btn text-capitalize text-start rounded-0 position-relative"><span>${citiesHistory[i]}</span></button>`
     );
     $('#history').append(cityButton);
   }
@@ -192,7 +206,7 @@ $('#history').on('click', '.city-button', function () {
 // header is fixed, add padding to main
 let padding = () => {
   $('main').css({
-    padding: `${$('header').outerHeight()}px`,
+    'padding-top': `${$('header').outerHeight()}px`,
   });
 };
 padding();
