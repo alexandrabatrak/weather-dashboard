@@ -21,12 +21,10 @@
     <title>Weather Dashboard</title>
   </head>
   <body>
-    <header class="container-fluid p-2 weather-header position-fixed">
+    <header class="container-fluid p-2 weather-header vw-100 position-fixed">
       <div class="navbar">
-        <div>
-          <h1 class="h4">Weather Dashboard</h1>
-        </div>
-        <div>
+        <h1 class="h6 header-title ps-3">Forecast</h1>
+        <div class="search-wrapper">
           <div class="input-group d-flex align-items-end">
             <p id="form-heading" class="me-3 form-label visually-hidden">
               Search for a City:
@@ -44,7 +42,7 @@
                   <div class="input-group-append">
                     <button
                       type="submit"
-                      class="btn btn-black search-button"
+                      class="btn search-button"
                       id="search-button"
                       aria-label="submit search">
                       <i class="fa-solid fa-search" aria-hidden="true">
@@ -55,25 +53,31 @@
                 </div>
               </div>
             </form>
+            <div class="history-button">
+              <button id="history-button" class="btn history-button">
+                <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"
+                  ><span class="visually-hidden">Search History</span></i
+                >
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- max-width for ultra wide resolutions -->
-    <main class="weather-main vw-100 vh-100 bg-image">
-      <aside class="position-fixed end-0 pe-5">
-        <div class="list-group" id="history"></div>
+    <main class="weather-main min-vh-100 bg-image">
+      <aside>
+        <div class="list-group no-show" id="history"></div>
       </aside>
       <div class="h-100 d-flex flex-column justify-content-center">
         <section
           id="today"
-          class="ps-3"
+          class="d-flex align-items-end ps-3 pb-3"
           role="region"
           aria-live="polite"></section>
         <section
           id="forecast"
-          class="w-100 position-fixed bottom-0"
+          class="w-100"
           role="region"
           aria-live="polite"></section>
       </div>
