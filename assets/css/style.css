@@ -1,0 +1,78 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+ul li,
+button {
+  color: rgb(255, 255, 255);
+  mix-blend-mode: difference;
+}
+
+.bg-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.weather-search {
+  color: white;
+  border: none;
+  border-bottom: 2px solid rgb(255, 255, 255);
+}
+.search-button {
+  color: rgb(255, 255, 255);
+}
+
+.search-button:hover {
+  color: white;
+}
+
+.city-button {
+  width: 200px;
+  border: none;
+  mix-blend-mode: difference;
+}
+
+.city-button:hover:before {
+  content: '\f124';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: bold;
+  position: absolute;
+  top: 0.5rem;
+  left: -0.5rem;
+  width: 1rem;
+  height: 1rem;
+  color: rgb(255, 255, 255);
+  mix-blend-mode: difference;
+}
+
+aside {
+  z-index: 2;
+  mix-blend-mode: lighten;
+}
+
+section#forecast {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.card {
+  display: grid;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.card:not(:first-of-type) {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-header {
+  width: 100%;
+  border: none;
+}
