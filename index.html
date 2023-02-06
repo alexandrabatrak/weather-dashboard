@@ -11,9 +11,7 @@
       crossorigin="anonymous" />
 
     <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link
-      href="https://fonts.bunny.net/css?family=roboto-flex:400"
-      rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=gotu:400" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <script
       src="https://kit.fontawesome.com/f549d17040.js"
@@ -21,7 +19,10 @@
     <title>Weather Dashboard</title>
   </head>
   <body>
-    <header class="container-fluid p-2 weather-header vw-100 position-fixed">
+    <div id="loader">
+      <p class="header-title">Forecast</p>
+    </div>
+    <header class="container-fluid p-2 weather-header position-fixed">
       <div class="navbar">
         <h1 class="h6 header-title ps-3">Forecast</h1>
         <div class="search-wrapper">
@@ -36,7 +37,7 @@
                     class="form-input weather-search bg-transparent"
                     type="text"
                     id="search-input"
-                    placeholder="London"
+                    placeholder="Search"
                     aria-labelledby="form-heading"
                     aria-controls="today forecast" />
                   <div class="input-group-append">
