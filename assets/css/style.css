@@ -1,3 +1,34 @@
+/* preload images for a smooth background transition */
+/* https://stackoverflow.com/questions/53431876/preload-background-images */
+body::after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
+  content: url(../images/01d.jpg) url(../images/01n.jpg) url(../images/02d.jpg)
+    url(../images/02n.jpg) url(../images/03d.jpg) url(../images/03n.jpg)
+    url(../images/04d.jpg) url(../images/04n.jpg) url(../images/05d.jpg)
+    url(../images/05n.jpg) url(../images/10d.jpg) url(../images/10n.jpg)
+    url(../images/11d.jpg) url(../images/11n.jpg) url(../images/13d.jpg)
+    url(../images/13n.jpg) url(../images/50d.jpg) url(../images/50n.jpg);
+}
+
+body {
+  background: black;
+}
+
+main.bg-image {
+  background-attachment: fixed;
+  background-position: 0;
+}
+
+.bg-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 h1,
 h2,
 h3,
@@ -8,25 +39,43 @@ p,
 span,
 ul li,
 button {
-  color: rgb(255, 255, 255);
-  mix-blend-mode: difference;
+  color: white;
+  text-shadow: 1px 1px 5px #475686, 1px 2px 15px rgba(7, 7, 61, 0.62);
 }
 
-.bg-image {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+header {
+  z-index: 1000;
 }
+
+.header-title {
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+
+main {
+  background-image: url('../images/01d.jpg'); /* set bg to animate */
+  transition: background-image 3s;
+  overflow: hidden;
+}
+
 .weather-search {
   color: white;
   border: none;
-  border-bottom: 2px solid rgb(255, 255, 255);
-}
-.search-button {
-  color: rgb(255, 255, 255);
+  border-bottom: 2px solid white;
 }
 
-.search-button:hover {
+.weather-search::placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+}
+
+.search-button,
+.history-button {
+  color: white;
+}
+
+.search-button:hover,
+.history-button:hover {
   color: white;
 }
 
@@ -45,16 +94,17 @@ button {
   left: -0.5rem;
   width: 1rem;
   height: 1rem;
-  color: rgb(255, 255, 255);
+  color: white;
   mix-blend-mode: difference;
 }
 
 aside {
+  position: absolute;
+  padding-right: 5rem;
   z-index: 2;
-  mix-blend-mode: lighten;
 }
 
-section#forecast {
+#forecast {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
@@ -62,10 +112,11 @@ section#forecast {
 .card {
   display: grid;
   padding: 0;
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
   border: none;
-  transition: all 0.5s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.15);
+  background-image: url('../images/transbg.png');
+  backdrop-filter: blur(10px);
+  transition: background-image 3s, max-height 1s, margin-top 1s;
 }
 
 .card:not(:first-of-type) {
@@ -75,4 +126,55 @@ section#forecast {
 .card-header {
   width: 100%;
   border: none;
+}
+
+#history {
+  opacity: 1;
+  max-height: 400px;
+  max-width: 100%;
+  transform: translateX(0);
+  transition: max-height 1s, opacity 1.5s, transform 1.25s ease-in-out,
+    max-width 3.5s;
+}
+
+#history.no-show {
+  max-height: 0;
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(100%);
+  z-index: -100;
+}
+
+@media (max-width: 575.999px) {
+  .search-wrapper {
+    width: 100%;
+  }
+
+  aside {
+    top: 100px;
+    left: 0;
+  }
+
+  #history.no-show {
+    transform: translateX(200%);
+  }
+}
+
+@media (min-width: 576px) {
+  aside {
+    position: fixed;
+    right: 0;
+  }
+}
+
+@media (max-width: 767.999px) {
+  #forecast {
+    position: relative;
+    grid-template-columns: 1fr;
+  }
+
+  #today {
+    height: 100vh;
+    height: 100dvh;
+  }
 }
