@@ -19,11 +19,13 @@
 }
 
 #loader .header-title {
-  animation: letters 20s;
-  animation-delay: 0.5s;
+  animation: letters 30s;
+  animation-delay: 1s;
 }
+
 /* preload images for a smooth background transition */
 /* https://stackoverflow.com/questions/53431876/preload-background-images */
+/* TODO: better less grainy background for 50d */
 body::after {
   position: absolute;
   width: 0;
@@ -43,15 +45,15 @@ body {
   font-family: 'Gotu', sans-serif;
 }
 
-main.bg-image {
-  background-attachment: fixed;
-  background-position: 0;
-}
-
 .bg-image {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+main.bg-image {
+  background-attachment: fixed;
+  background-position: 0;
 }
 
 h1,
@@ -94,6 +96,8 @@ header.up {
 }
 
 main {
+  min-height: 100vh;
+  min-height: 100dvh;
   background-image: url('../images/01d.jpg'); /* set bg to animate */
   transition: background-image 3s;
   overflow: hidden;
@@ -112,7 +116,8 @@ main {
 
 .search-wrapper {
   border: 1.5px solid;
-  border-color: transparent transparent white transparent;
+  border-color: transparent transparent rgba(255, 255, 255, 0.15) transparent;
+  box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.5);
   transition: border 0.5s;
 }
 
@@ -215,12 +220,17 @@ main {
     opacity: 1;
   }
   50% {
-    letter-spacing: 200px;
+    letter-spacing: 100px;
     opacity: 0.5;
   }
 }
 
 @media (max-width: 575.999px) {
+  header h1 {
+    width: 100%;
+    text-align: center;
+  }
+
   .search-wrapper {
     width: 100%;
     margin: 1rem;
@@ -249,6 +259,10 @@ main {
   #today {
     height: 100vh;
     height: 100dvh;
+  }
+
+  .card:not(:first-of-type) {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .card-body {
