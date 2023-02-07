@@ -239,8 +239,8 @@ main {
 
   #history {
     left: 0;
-    width: 100%;
-    padding: 1rem;
+    width: 100% !important;
+    padding: 1rem 2rem;
     backdrop-filter: blur(10px);
     box-shadow: 2px 20px 20px rgba(0, 0, 0, 0.3);
   }
