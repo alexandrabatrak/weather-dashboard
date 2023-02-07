@@ -1,14 +1,17 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//   setTimeout(() => {
-//     $('#loader').addClass('hide');
-//   }, 1000);
-// });
+window.addEventListener('DOMContentLoaded', () => {
+  const loader = $('#loader');
+  if (loader) {
+    setInterval(() => {
+      loader.remove();
+    }, 500);
+  }
+});
 $(document).ready(function () {
   // hide loader
-  window.onload = () =>
-    setTimeout(() => {
-      $('#loader').addClass('hide');
-    }, 1000);
+  // window.onload = () =>
+  //   setTimeout(() => {
+  //     $('#loader').addClass('hide');
+  //   }, 1000);
 
   const API_KEY = '01990277676ad45f8bc3f867a4878557';
   let cityName, countryCode, geo, lat, lon;
