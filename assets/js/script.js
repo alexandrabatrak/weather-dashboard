@@ -18,9 +18,6 @@ $(document).ready(function () {
   }
   defaultCity();
   // Geolocation from navigator
-  // https://stackoverflow.com/questions/33946925/how-do-i-get-geolocation-in-openweather-api
-  // https://www.spatialtimes.com/2019/01/Create-a-JavaScript-Weather-App-with-Location-Data-Part-1/
-  // https://stackoverflow.com/questions/6548504/how-can-i-get-city-name-from-a-latitude-and-longitude-point
   let openweathermap = 'https://api.openweathermap.org/data/2.5/weather';
   let openweatherforecast = 'https://api.openweathermap.org/data/2.5/forecast';
   if (window.navigator && window.navigator.geolocation) {
@@ -37,7 +34,6 @@ $(document).ready(function () {
           getForecast(cityName, addCity);
         });
       },
-      // https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError
       function (error) {
         if (error.code === error.PERMISSION_DENIED) {
           defaultCity();
@@ -125,13 +121,13 @@ $(document).ready(function () {
             let icon = result.weather[0].icon;
             let temp = Math.floor(result.main.temp);
             let humidity = result.main.humidity;
-            let wind = result.wind.speed;
+            let wind = Math.floor(result.wind.speed);
 
             let todayWeatherDisplay = $(
               `<div>
                 <div class="weather-header position-relative">
-                  <h2 class="display-2 text-capitalise position-relative">${name}</h2><sup class="badge position-absolute">${country}</sup>
-                  <h3>${today}</h3>
+                  <h2 class="display-1 text-capitalise position-relative">${name}</h2><sup class="badge position-absolute">${country}</sup>
+                  <h3 class="h4">${today}</h3>
                 </div>
                 <div class="d-flex align-items-center">
                   <span>Feels like ${feelsLike}&#8451</span>
@@ -247,6 +243,9 @@ $(document).ready(function () {
       );
       $('#history').append(cityButton);
     }
+    // ?? check if I need to return array back to original
+    // ?? could I update the history on click so the latest always on top, whether searched or clicked
+    // citiesHistory = citiesHistory.reverse().splice(0, 0);
   }
   renderHistory();
 
@@ -287,25 +286,25 @@ $(document).ready(function () {
     el.hasClass('no-show') ? el.removeClass('no-show') : el.addClass('no-show');
   });
 
-  // dynamically calculate elements size nonsense - lately I have this everywhere lol
-  // https://dzone.com/articles/checking-media-queries-jquery
+  // dynamically calculate elements size - lately I have this everywhere lol
   let height = () => {
     if (window.matchMedia('(min-width: 768px)').matches) {
       $('#today').css(
         'min-height',
-        `calc(100vh - ${$('#forecast').outerHeight(true)}px - ${$(
-          'header'
-        ).outerHeight(true)}px)`
+        `calc(100vh - 250px - ${$('header').outerHeight(true)}px)`
       );
       $('main').css('padding-top', `${$('header').outerHeight(true)}px`);
     }
   };
   height();
-  let historyWidth = () =>
-    $('#history').css('width', `${$('.search-wrapper').outerWidth(true)}px`);
-  historyWidth();
+  let history = () =>
+    $('#history').css({
+      width: `${$('.search-wrapper').outerWidth(true)}px`,
+      top: `${$('header').outerHeight(true)}px`,
+    });
+  history();
   window.onresize = () => {
     height();
-    historyWidth();
+    history();
   };
 });

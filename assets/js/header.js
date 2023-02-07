@@ -4,7 +4,7 @@ $(function () {
   let delta = 5;
   const header = $('header');
   let headerHeight = header.outerHeight(true);
-  let offset = $('#forecast').offset();
+  let offset = $('main').offset();
 
   $(window).scroll(function () {
     didScroll = true;
