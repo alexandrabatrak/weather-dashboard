@@ -1,6 +1,12 @@
 $(document).ready(function () {
   // hide loader
-  $(window).on('load', function () {
+  // $(window).on('load', function () {
+  //   setTimeout(() => {
+  //     $('#loader').addClass('hide');
+  //   }, 1000);
+  // });
+
+  document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
       $('#loader').addClass('hide');
     }, 1000);
@@ -250,6 +256,7 @@ $(document).ready(function () {
   renderHistory();
 
   // search event listener
+  // TODO: Share this event listener with submit function (on enter) and remove focus from the element
   $('#search-button').on('click', function (e) {
     // $('.search-wrapper .error').remove();
     e.preventDefault();
