@@ -19,8 +19,8 @@
 }
 
 #loader .header-title {
-  animation: letters 30s;
-  animation-delay: 1s;
+  animation: letters 20s;
+  animation-delay: 0.5s;
 }
 /* preload images for a smooth background transition */
 /* https://stackoverflow.com/questions/53431876/preload-background-images */
@@ -215,7 +215,7 @@ main {
     opacity: 1;
   }
   50% {
-    letter-spacing: 100px;
+    letter-spacing: 200px;
     opacity: 0.5;
   }
 }

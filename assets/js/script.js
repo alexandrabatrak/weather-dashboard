@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
       loader.addClass('hide');
       setTimeout(() => {
         loader.remove();
-      }, 500);
+      }, 1000);
     }, 1500);
   }
 });
