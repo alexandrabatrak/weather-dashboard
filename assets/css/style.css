@@ -17,6 +17,11 @@
   opacity: 0;
   z-index: -1000;
 }
+
+#loader .header-title {
+  animation: letters 10s;
+  animation-delay: 1s;
+}
 /* preload images for a smooth background transition */
 /* https://stackoverflow.com/questions/53431876/preload-background-images */
 body::after {
@@ -72,7 +77,8 @@ header {
 }
 
 header.filled {
-  background: black;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 header.up {
@@ -81,8 +87,10 @@ header.up {
 }
 
 .header-title {
+  padding: 0.75rem 0;
   text-transform: uppercase;
-  letter-spacing: 10px;
+  letter-spacing: 15px;
+  transition: letter-spacing 1s;
 }
 
 main {
@@ -94,7 +102,22 @@ main {
 .weather-search {
   color: white;
   border: none;
-  border-bottom: 2px solid white;
+  padding: 0 0.5rem;
+  font-weight: bold;
+}
+
+.weather-search:focus {
+  outline: none;
+}
+
+.search-wrapper {
+  border: 1.5px solid;
+  border-color: transparent transparent white transparent;
+  transition: border 0.5s;
+}
+
+.weather-search:focus .search-wrapper {
+  border-color: white;
 }
 
 .weather-search::placeholder {
@@ -166,19 +189,16 @@ main {
 #history {
   opacity: 1;
   max-height: 400px;
-  max-width: 100%;
   padding-right: 0.5rem;
-  top: 75px;
   right: 0;
-  transition: max-height 1s, opacity 1.5s, max-width 3.5s;
+  transition: max-height 1s ease-in-out, opacity 1s ease-in-out,
+    backdrop-filter 0.5s, box-shadow 2s ease-in-out 1s;
   z-index: 2;
 }
 
 #history.no-show {
-  max-height: 0;
+  max-height: 0px;
   opacity: 0;
-  width: 0 !important;
-  max-width: 0;
   overflow: hidden;
   z-index: -100;
 }
@@ -188,21 +208,38 @@ main {
   margin-top: 0.5rem;
 }
 
+@keyframes letters {
+  from {
+    letter-spacing: 15px;
+    opacity: 1;
+  }
+  to {
+    letter-spacing: 100px;
+    opacity: 0.5;
+  }
+}
+
 @media (max-width: 575.999px) {
   .search-wrapper {
     width: 100%;
-    padding: 1rem;
+    margin: 1rem;
   }
 
   #history {
-    top: 100px;
     left: 0;
     width: 100%;
     padding: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 20px 20px rgba(0, 0, 0, 0.3);
   }
 }
 
 @media (max-width: 767.999px) {
+  .weather-search {
+    width: 100%;
+    min-width: 150px;
+  }
+
   #forecast {
     position: relative;
     grid-template-columns: 1fr;
@@ -211,5 +248,11 @@ main {
   #today {
     height: 100vh;
     height: 100dvh;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
