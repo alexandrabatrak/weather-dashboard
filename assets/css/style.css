@@ -183,6 +183,7 @@ main {
 }
 
 .card:not(:first-of-type) {
+  border-top: none;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -262,6 +263,7 @@ main {
   }
 
   .card:not(:first-of-type) {
+    border-left: none;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
