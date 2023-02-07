@@ -1,16 +1,14 @@
+// document.addEventListener('DOMContentLoaded', function () {
+//   setTimeout(() => {
+//     $('#loader').addClass('hide');
+//   }, 1000);
+// });
 $(document).ready(function () {
   // hide loader
-  // $(window).on('load', function () {
-  //   setTimeout(() => {
-  //     $('#loader').addClass('hide');
-  //   }, 1000);
-  // });
-
-  document.addEventListener('DOMContentLoaded', function () {
+  window.onload = () =>
     setTimeout(() => {
       $('#loader').addClass('hide');
     }, 1000);
-  });
 
   const API_KEY = '01990277676ad45f8bc3f867a4878557';
   let cityName, countryCode, geo, lat, lon;
