@@ -67,24 +67,20 @@
           </div>
         </div>
       </div>
+      <div class="list-group no-show position-absolute" id="history"></div>
     </header>
 
     <main class="weather-main min-vh-100 bg-image">
-      <aside>
-        <div class="list-group no-show" id="history"></div>
-      </aside>
-      <div class="h-100 d-flex flex-column justify-content-center">
-        <section
-          id="today"
-          class="d-flex align-items-end ps-3 pb-3"
-          role="region"
-          aria-live="polite"></section>
-        <section
-          id="forecast"
-          class="w-100"
-          role="region"
-          aria-live="polite"></section>
-      </div>
+      <section
+        id="today"
+        class="d-flex align-items-end ps-3 pb-3"
+        role="region"
+        aria-live="polite"></section>
+      <section
+        id="forecast"
+        class="w-100"
+        role="region"
+        aria-live="polite"></section>
     </main>
 
     <!-- Moment.js -->
@@ -92,5 +88,6 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/header.js"></script>
   </body>
 </html>
