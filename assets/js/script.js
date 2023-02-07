@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  // hide loader
   $(window).on('load', function () {
     setTimeout(() => {
       $('#loader').addClass('hide');
@@ -8,6 +9,14 @@ $(document).ready(function () {
   const API_KEY = '01990277676ad45f8bc3f867a4878557';
   let cityName, countryCode, geo, lat, lon;
   let addCity = true;
+
+  // display default city forecast
+  function defaultCity() {
+    cityName = 'london';
+    getCurrentWeather(cityName);
+    getForecast(cityName, addCity);
+  }
+  defaultCity();
   // Geolocation from navigator
   // https://stackoverflow.com/questions/33946925/how-do-i-get-geolocation-in-openweather-api
   // https://www.spatialtimes.com/2019/01/Create-a-JavaScript-Weather-App-with-Location-Data-Part-1/
@@ -31,14 +40,13 @@ $(document).ready(function () {
       // https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError
       function (error) {
         if (error.code === error.PERMISSION_DENIED) {
-          cityName = 'london';
-          getCurrentWeather(cityName);
-          getForecast(cityName, addCity);
+          defaultCity();
         }
       }
     );
   }
 
+  // geoCoder ajax call
   function getGeoCode(cityName) {
     return new Promise((resolve, reject) => {
       let geoCoder = 'https://api.openweathermap.org/geo/1.0/direct';
@@ -48,6 +56,7 @@ $(document).ready(function () {
         limit: 1,
         appid: API_KEY,
       })
+        // return result with latitude and longitude and resolve on success
         .done(function (result) {
           if (!result || !result[0] || !result[0].lat || !result[0].lon) {
             reject(new Error('No city found'));
@@ -59,23 +68,28 @@ $(document).ready(function () {
             resolve(geo);
           }
         })
+        // get error and display the message underneath search bar
         .catch(function (error) {
           reject(error);
-          if (!$('.error').length) {
-            $('.search-wrapper').append(
-              `<div class="error">
-              <p>${error.message}</p>
-            </div>`
-            );
-          } else {
-            $('.search-wrapper .error').html(`<p>${error.message}</p>`);
-          }
+          $('#search-input').attr('placeholder', error.message);
+          setTimeout(() => {
+            $('#search-input').attr('placeholder', 'Search');
+          }, 1500);
         });
     });
   }
+
+  function displayStaticError() {
+    $('#search-input').attr('placeholder', 'No city found');
+    setTimeout(() => {
+      $('#search-input').attr('placeholder', 'Search');
+    }, 1500);
+  }
+  // get locally hosted history of searches
   let citiesHistory = JSON.parse(localStorage.getItem('citiesHistory')) || [];
 
   function getCurrentWeather(cityName, addCity) {
+    // retrieve geo data from geoCoder function
     getGeoCode(cityName)
       .then((geo) => {
         lat = geo.latitude;
@@ -86,21 +100,15 @@ $(document).ready(function () {
           method: 'GET',
         });
       })
-      .catch(function () {
-        if (!$('.error').length) {
-          $('.search-wrapper').append(
-            `<div class="error">
-            <p>No city found</p>
-          </div>`
-          );
-        } else {
-          $('.search-wrapper .error').text('No city found');
-        }
-      })
+      .catch(displayStaticError)
+      // proceed if nothing caught
       .then(function (result) {
-        console.log(result);
+        // clear search input
+        $('#search-input').val('');
+        // double checking that result exist, in case it wasn't caught enough
         if (result) {
           if (result.cod === 200) {
+            // only add new cities to the history
             if (addCity & !citiesHistory.includes(cityName)) {
               citiesHistory.push(cityName);
               localStorage.setItem(
@@ -121,22 +129,22 @@ $(document).ready(function () {
 
             let todayWeatherDisplay = $(
               `<div>
-            <div class="weather-header position-relative">
-              <h2 class="display-2 text-capitalise position-relative">${name}</h2><sup class="badge position-absolute">${country}</sup>
-              <h3>${today}</h3>
-            </div>
-            <div class="d-flex align-items-center">
-              <span>Feels like ${feelsLike}&#8451</span>
-              <img src="ss://openweathermap.org/img/wn/${icon}.png"/>
-            </div>
-            <div class="weather-details-wrapper">
-              <ul class="list-inline">
-                <li class="list-inline-item">${temp}&#8451</li>
-                <li class="list-inline-item">${humidity}%</li>
-                <li class="list-inline-item">${wind}m/s</li>
-              </ul>
-            </div>
-          </div>`
+                <div class="weather-header position-relative">
+                  <h2 class="display-2 text-capitalise position-relative">${name}</h2><sup class="badge position-absolute">${country}</sup>
+                  <h3>${today}</h3>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span>Feels like ${feelsLike}&#8451</span>
+                  <img src="https://openweathermap.org/img/wn/${icon}.png"/>
+                </div>
+                <div class="weather-details-wrapper">
+                  <ul class="list-inline">
+                    <li class="list-inline-item">${temp}&#8451</li>
+                    <li class="list-inline-item">${humidity}%</li>
+                    <li class="list-inline-item">${wind}m/s</li>
+                  </ul>
+                </div>
+              </div>`
             );
 
             // add background based on weather
@@ -170,20 +178,11 @@ $(document).ready(function () {
           method: 'GET',
         });
       })
-      .catch(function () {
-        if (!$('.error').length) {
-          $('.search-wrapper').append(
-            `<div class="error">
-            <p>No city found</p>
-          </div>`
-          );
-        } else {
-          $('.search-wrapper .error').text('No city found');
-        }
-      })
+      .catch(displayStaticError)
       .then(function (result) {
         if (result) {
           let forecastData = result.list;
+          // filter by hour to display by days, not 40 hour slots
           const dailyData = forecastData.filter((forecastData) => {
             return forecastData.dt_txt.includes('15:00:00');
           });
@@ -193,6 +192,7 @@ $(document).ready(function () {
           let dates = dailyData.map((forecastData) =>
             moment(forecastData.dt_txt).format('LL')
           );
+          // define an array to append cards to
           let forecastCards = [];
           for (let i = 0; i < dates.length; i++) {
             let icon = dailyData[i].weather[0].icon;
@@ -202,20 +202,21 @@ $(document).ready(function () {
             let date = dates[i];
             let forecastCard = $(
               `<div class="card rounded-0 bg-image">
-              <div class="card-body">
-                <h5>${weekdate}</h5>
-                <p>${date}</p>
-                <div class="weather-data-wrapper">
-                <ul class="list-inline">
-                  <li class="list-inline-item">${temp}&#8451</li>
-                  <li class="list-inline-item">${humidity}%</li>
-                </ul>
-                  <img src="https://openweathermap.org/img/wn/${icon}.png"/>
-                <div>
-              </div>
-            </div>`
+                <div class="card-body">
+                  <h5>${weekdate}</h5>
+                  <p>${date}</p>
+                  <div class="weather-data-wrapper">
+                  <ul class="list-inline">
+                    <li class="list-inline-item">${temp}&#8451</li>
+                    <li class="list-inline-item">${humidity}%</li>
+                  </ul>
+                    <img src="https://openweathermap.org/img/wn/${icon}.png"/>
+                  <div>
+                </div>
+              </div>`
             );
             forecastCards.push(forecastCard);
+            // animate background fade-in on hover
             $(forecastCard)
               .mouseover(function () {
                 $(this).css(
@@ -231,11 +232,13 @@ $(document).ready(function () {
               });
           }
           $('#forecast').empty().append(forecastCards).hide().fadeIn(500);
+          // calculate `main` height after the forecastCards element exists and it's height can be retrieved
           height();
         }
       });
   }
 
+  // show last 10 search history cities
   function renderHistory() {
     citiesHistory = citiesHistory.reverse().splice(0, 10);
     for (i = 0; i < citiesHistory.length; i++) {
@@ -247,13 +250,17 @@ $(document).ready(function () {
   }
   renderHistory();
 
+  // search event listener
   $('#search-button').on('click', function (e) {
+    // $('.search-wrapper .error').remove();
     e.preventDefault();
     const newCity = $('#search-input').val().toString().toLocaleLowerCase();
 
+    // convert citiesHisotory to an array
     if (!Array.isArray(citiesHistory)) {
       citiesHistory = [];
     }
+    // check if the city already in the array
     if (!citiesHistory.includes(newCity)) {
       cityName = newCity;
     }
@@ -261,22 +268,26 @@ $(document).ready(function () {
       cityName = $('#search-input').val().toString().toLocaleLowerCase();
       addCity = false;
     }
+
+    // proceed with main functions
     getCurrentWeather(cityName, addCity);
     getForecast(cityName);
-    $('#search-input').val('');
   });
 
+  // get weather data by selecting city from the history list
   $('#history').on('click', '.city-button', function () {
     cityName = $(this).text();
     getCurrentWeather(cityName, addCity);
     getForecast(cityName);
   });
 
+  // toggle history list visibility
   $('#history-button').click(() => {
     let el = $('#history');
     el.hasClass('no-show') ? el.removeClass('no-show') : el.addClass('no-show');
   });
 
+  // dynamically calculate elements size nonsense - lately I have this everywhere lol
   // https://dzone.com/articles/checking-media-queries-jquery
   let height = () => {
     if (window.matchMedia('(min-width: 768px)').matches) {
@@ -290,7 +301,11 @@ $(document).ready(function () {
     }
   };
   height();
-  window.onresize = () => height();
-
-  $('#history').css('width', `${$('.search-wrapper').outerWidth(true)}px`);
+  let historyWidth = () =>
+    $('#history').css('width', `${$('.search-wrapper').outerWidth(true)}px`);
+  historyWidth();
+  window.onresize = () => {
+    height();
+    historyWidth();
+  };
 });
