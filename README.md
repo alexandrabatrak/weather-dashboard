@@ -21,9 +21,10 @@ Moody display of current weather and forecast. Access current weather data for a
 
 ### [View Project](https://alexandrabatrak.github.io/weather-dashboard)
 
+![Screenshot-loading](/assets/images/screenshot-loading.png)
 ![Screenshot](/assets/images/screenshot.png)
 ![Screenshot-mobile](/assets/images/screenshot-mobile.png)
-![Screenshot-mobile2](/assets/images/screenshot-mobile2.png)
+![Screenshot-mobile2](/assets/images/screenshot-mobile-2.png)
 
 ### What I've learned
 
