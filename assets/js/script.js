@@ -1,9 +1,12 @@
 window.addEventListener('DOMContentLoaded', () => {
   const loader = $('#loader');
   if (loader) {
-    setInterval(() => {
-      loader.remove();
-    }, 500);
+    setTimeout(() => {
+      loader.addClass('hide');
+      setTimeout(() => {
+        loader.remove();
+      }, 500);
+    }, 1500);
   }
 });
 $(document).ready(function () {
