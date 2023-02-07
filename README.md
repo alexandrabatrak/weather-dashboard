@@ -6,7 +6,7 @@ Bootcamp week 08: Weather Dashboard :black_heart:
 
 F O R E C A S T
 
-Moody display of current weather, as well as forecast. Access current weather data for any location on Earth. Beautiful on desktop, beautiful on mobile.
+Moody display of current weather and forecast. Access current weather data for any location on Earth. Beautiful on desktop, beautiful on mobile.
 
 ### Features:
 
@@ -22,7 +22,8 @@ Moody display of current weather, as well as forecast. Access current weather da
 ### [View Project](https://alexandrabatrak.github.io/weather-dashboard)
 
 ![Screenshot](/assets/images/screenshot.png)
-![Screenshot2](/assets/images/screenshot2.png)
+![Screenshot-mobile](/assets/images/screenshot-mobile.png)
+![Screenshot-mobile2](/assets/images/screenshot-mobile2.png)
 
 ### What I've learned
 
