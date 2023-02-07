@@ -58,13 +58,26 @@ h6,
 p,
 span,
 ul li,
-button {
+button,
+.error p {
   color: white;
   text-shadow: 1px 1px 5px #475686, 1px 2px 15px rgba(7, 7, 61, 0.62);
 }
 
 header {
   z-index: 1000;
+  transition: all 1s;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+header.filled {
+  background: black;
+}
+
+header.up {
+  opacity: 0;
+  transform: translateY(-100px);
 }
 
 .header-title {
@@ -119,12 +132,6 @@ main {
   mix-blend-mode: difference;
 }
 
-aside {
-  position: absolute;
-  padding-right: 0.5rem;
-  z-index: 2;
-}
-
 #today .weather-header .badge {
   right: -2rem;
   font-size: 1rem;
@@ -160,16 +167,19 @@ aside {
   opacity: 1;
   max-height: 400px;
   max-width: 100%;
-  transform: translateX(0);
-  transition: max-height 1s, opacity 1.5s, transform 1.25s ease-in-out,
-    max-width 3.5s;
+  padding-right: 0.5rem;
+  top: 75px;
+  right: 0;
+  transition: max-height 1s, opacity 1.5s, max-width 3.5s;
+  z-index: 2;
 }
 
 #history.no-show {
   max-height: 0;
   opacity: 0;
+  width: 0 !important;
   max-width: 0;
-  transform: translateX(100%);
+  overflow: hidden;
   z-index: -100;
 }
 
@@ -181,22 +191,14 @@ aside {
 @media (max-width: 575.999px) {
   .search-wrapper {
     width: 100%;
+    padding: 1rem;
   }
 
-  aside {
+  #history {
     top: 100px;
     left: 0;
-  }
-
-  #history.no-show {
-    transform: translateX(200%);
-  }
-}
-
-@media (min-width: 576px) {
-  aside {
-    position: fixed;
-    right: 0;
+    width: 100%;
+    padding: 1rem;
   }
 }
 
