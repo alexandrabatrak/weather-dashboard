@@ -31,7 +31,7 @@ Moody display of current weather and forecast. Access current weather data for a
 - Working with API's
 - JavaScript Promises and async
 - Smooth background transitions
-- Geolocation from navigator [1](https://stackoverflow.com/questions/33946925/how-do-i-get-geolocation-in-openweather-api), [2](https://www.spatialtimes.com/2019/01/Create-a-JavaScript-Weather-App-with-Location-Data-Part-1/), [3](https://stackoverflow.com/questions/6548504/how-can-i-get-city-name-from-a-latitude-and-longitude-point), [4](https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError)
+- Geolocation [1](https://stackoverflow.com/questions/33946925/how-do-i-get-geolocation-in-openweather-api), [2](https://www.spatialtimes.com/2019/01/Create-a-JavaScript-Weather-App-with-Location-Data-Part-1/), [3](https://stackoverflow.com/questions/6548504/how-can-i-get-city-name-from-a-latitude-and-longitude-point), [4](https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError)
 - [jQuery media queries](https://dzone.com/articles/checking-media-queries-jquery)
 
 ## Credits
