@@ -17,7 +17,9 @@ Moody display of current weather and forecast. Access current weather data for a
 - [x] History saved to localStorage
 - [x] Smooth transitions
 - [x] Weather backgrounds for each weather type
-- [x] Animated loader to look at while waiting for API connection
+- [x] Animated loader
+
+Built using jQuery, Bootstrap 5, moment.js and Openweathermap API services. 
 
 ### [View Project](https://alexandrabatrak.github.io/weather-dashboard)
 
