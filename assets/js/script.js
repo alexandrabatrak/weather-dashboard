@@ -49,11 +49,11 @@ async function getWeather(cityName, addCity) {
         url: queryURLCurrent,
         method: 'GET',
       }).then(function (result) {
-        // clear search input
-        $('#search-input').val('');
         // double checking that result exist, in case it wasn't caught enough
         // without this extra check there are console errors for undefined bla-bla
         if (result) {
+          // clear search input
+          $('#search-input').val('');
           if (result.cod === 200) {
             // only add new cities to the history
             if (addCity & !citiesHistory.includes(result.name)) {
@@ -232,11 +232,11 @@ $('#search-input').keypress((e) => {
 // display error in the search field
 function displayStaticError() {
   const input = $('#search-input');
-  if (input.attr('placeholder') !== 'No city found') {
-    input
-      .attr('placeholder', 'No city found')
-      .focus(setTimeout(() => input.attr('placeholder', 'Search'), 1500));
-  }
+  input.val('');
+  input.attr('placeholder', 'No city found');
+  setTimeout(() => {
+    input.attr('placeholder', 'Search').focus();
+  }, 1500);
 }
 
 // get weather data by selecting city from the history list
