@@ -148,6 +148,7 @@ async function getWeather(cityName, addCity) {
                 .find('.weather-data-wrapper')
                 .fadeOut(500, function () {
                   $(this).replaceWith(forecastCardContent).hide().fadeIn(500);
+                  updateBackground(existingForecastCard, icon);
                 });
             } else {
               forecastCard = $(
@@ -160,22 +161,25 @@ async function getWeather(cityName, addCity) {
               );
               forecastCard.find('.card-body').append(forecastCardContent);
               $('#forecast').append(forecastCard);
+              updateBackground(forecastCard, icon);
             }
 
             // animate background fade-in on hover
-            $(forecastCard)
-              .mouseover(function () {
-                $(this).css(
-                  'background-image',
-                  `url(./assets/images/${icon}.jpg)`
-                );
-              })
-              .mouseleave(function () {
-                $(this).css(
-                  'background-image',
-                  `url(./assets/images/transbg.png)`
-                );
-              });
+            function updateBackground(card, icon) {
+              card
+                .mouseover(function () {
+                  $(this).css(
+                    'background-image',
+                    `url(./assets/images/${icon}.jpg)`
+                  );
+                })
+                .mouseleave(function () {
+                  $(this).css(
+                    'background-image',
+                    `url(./assets/images/transbg.png)`
+                  );
+                });
+            }
           }
         }
       }),
