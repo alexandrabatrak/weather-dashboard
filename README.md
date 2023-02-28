@@ -1,6 +1,6 @@
 # Weather Forecast
 
-Bootcamp week 08: Weather Dashboard :black_heart:
+:black_heart:
 
 ## About
 
